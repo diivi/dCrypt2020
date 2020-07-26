@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}
+
+{% endblock %}
+{% block body %}
+
+<div >
+<div >
+<div >
+<div >
+  <form action="/login" method="post">
+    <div >
+      <h2 > Login</h2>
+      <label for="email">Email</label>
+      <input type="email" name="email"  style="margin-bottom:15px;">
+      <label for="password"> Password</label>
+      <input type="password" name="password" >
+      <button  type="submit">Login</button>
+      <p > Dont have and account?<a  href="{{url_for('register')}}"> Register Now</a></p>
+      {% if message is not none %}
+      <div > {{message}}</div>
+      {%endif %}
+
+    </div>
+  </form>
+</div>
+
+
+</div>
+</div>
+</div>
+
+
+{% endblock %}
