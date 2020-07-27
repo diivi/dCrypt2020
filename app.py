@@ -22,10 +22,40 @@ engine = create_engine('postgres://xleyamymtmttse:6dc415794969d9ea7f3dd850dfa9e5
 db = scoped_session(sessionmaker(bind=engine))
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    return render_template("index.html")
+    if request.method == "POST":
+            bp = db.execute("SELECT * FROM users where username = :username",{"username": session["user_name"]})
+            result = bp.fetchone()
+            session["battle_points"] = result[4]
+            session["soldier"] = result[5]
+            session["bomber"] = result[6]
+            session["airstrike"] = result[7]
+            session["tank"] = result[8]
+            if int(request.form.get("soldier")) > 0 and int(request.form.get("bomber")) >0 and int(request.form.get("airstrike")) >0 and int(request.form.get("tank")) >0:
+                soldier = int(request.form.get("soldier"))
+                bomber = int(request.form.get("bomber"))
+                airstrike = int(request.form.get("airstrike"))
+                tank = int(request.form.get("tank"))
+                cost = (soldier*150)+(bomber*200)+(airstrike*250)+(tank*400)
+                if session["battle_points"] > cost:
+                    db.execute("UPDATE users SET soldier = :soldier WHERE username = :username", {"soldier": session["soldier"]+soldier, "username":session["user_name"]})
+                    db.execute("UPDATE users SET bomber = :bomber WHERE username = :username", {"bomber": session["bomber"]+bomber, "username":session["user_name"]})
+                    db.execute("UPDATE users SET airstrike = :airstrike WHERE username = :username", {"airstrike": session["airstrike"]+airstrike, "username":session["user_name"]})
+                    db.execute("UPDATE users SET tank = :bomber WHERE username = :username", {"bomber": session["bomber"]+bomber, "username":session["user_name"]})
+                    db.execute("UPDATE users SET battlep = :battlep WHERE username = :username", {"battlep":session["battle_points"]-cost , "username":session["user_name"]})
+                    db.commit()
+                    return render_template("index.html", message='soldiers bought')
+                else:
+                    return render_template("index.html", message="insufficient battle points")
+
+            elif int(request.form.get("soldier")) <= 0 or int(request.form.get("bomber")) <=0 or int(request.form.get("airstrike")) <=0 or int(request.form.get("tank")) <=0:
+                return render_template("index.html", message='How can you even buy troops less than 0 or equal to 0??')
+
+    else:
+        return render_template("index.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

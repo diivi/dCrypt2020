@@ -2,5 +2,15 @@
 
 
 {% block body %}
+<form method="post" action="/">
+    <input type="number" id="quantity" name="soldier" value="0" min="0">
+    <input type="number" id="quantity" name="bomber" value="0" min="0">
+    <input type="number" id="quantity" name="airstrike" value="0" min="0">
+    <input type="number" id="quantity" name="tank" value="0" min="0">
+    <button type="submit">Submit</button>
+    {% if message is not none %}
+    <div > {{message}}</div>
+    {%endif %}
 
+</form>
 {% endblock %}
