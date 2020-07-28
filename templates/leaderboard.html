@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block linking %}
+<script src="{{url_for('static', filename='js/attack.js')}}" charset="utf-8"></script>
+{% endblock %}
+{% block body %}
+
+<h1 style="margin-top:10px;">LEADERBOARD </h1>
+{% for row in data %}
+<div class="row">  <div class="" style="float:left; margin-left:20px;">
+      {{ loop.index}}
+  </div>
+  <div class="" style="float:left; margin-left:20px;">
+      {{ row[0]}}
+  </div>
+  <div class="" style="margin-left:10px;">
+    {{row[1]}}
+  </div>
+
+{% if row[0] != session.school %}
+<form class="" action="/attack" method="post">
+  <input type="hidden" name="victim" value="{{row[0]}}">
+    <button type="submit" name="button" style="display:inline;">ATTACK</button>
+</form>
+</div>
+{% else %}
+</div>
+{% endif %}
+{% endfor %}
+
+
+
+
+{% endblock %}

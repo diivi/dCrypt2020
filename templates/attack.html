@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block linking %}
+
+{% endblock %}
+{% block body %}
+
+<h1>attacking {{data}}</h1>
+
+<h1>Inventory</h1>
+<div class="">
+  Soldiers:{{session.soldier}}
+</div>
+<div class="">
+  Bombers:{{session.bomber}}
+</div>
+<div class="">
+  Airstrike:{{session.airstrike}}
+</div>
+<div class="">
+  Tanks:{{session.tank}}
+</div>
+
+<form method="post" >
+  <input type="hidden" name="victim" value="{{data}}">
+    <input type="number" id="quantity" name="soldier" value="0" min="0" max="{{session.soldier}}">
+    <input type="number" id="quantity" name="airstrike" value="0" min="0" max="{{session.airstrike}}">
+    <input type="number" id="quantity" name="tank" value="0" min="0" max="{{session.tank}}">
+    <button type="submit">Deploy</button>
+
+
+    {% if message is not none %}
+    <div > {{message}}</div>
+    {%endif %}
+
+
+</form>
+
+{% endblock %}
